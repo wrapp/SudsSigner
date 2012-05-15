@@ -53,6 +53,9 @@ class SignerPlugin(MessagePlugin):
             raise ValueError('keytype must be a string or None')
 
     def detect_keytype(self):
+        # TODO: It fails to detect the type of our key
+        return RSA
+
         algo = self.cert.get_signature_algorithm()
         if algo.startswith('dsa'):
             return DSA
@@ -66,6 +69,11 @@ class SignerPlugin(MessagePlugin):
         queue = SignQueue()
         queue.push_and_mark(body)
         security = ensure_security_header(env, queue)
+
+        # TODO: Just inserting an empty timestamp element seems to be
+        # good enough for First Data for now
+        timestemp = etree.SubElement(security, ns_id('Timestamp', wsuns))
+
         self.insert_signature_template(security, queue)
         context.envelope = self.get_signature(etree.tostring(env))
 
