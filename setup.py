@@ -3,8 +3,7 @@
 from distutils.core import setup
 
 setup(
-    name='sudssigner',
+    name='SudsSigner',
     version='1.0',
     packages=['sudssigner'],
-    zip_safe=False
 )
